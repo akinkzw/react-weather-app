@@ -5,8 +5,8 @@ import axios from "axios";
 import Title from "./conponents/Title";
 import Form from "./conponents/Form";
 import Results from "./conponents/Results";
-import './App.css';
 import Loading from "./conponents/Loading";
+import './App.css';
 
 function App() {
   const [loading, setLoading] = useState(false);
