@@ -6,7 +6,7 @@ import Title from "./conponents/Title";
 import Form from "./conponents/Form";
 import Results from "./conponents/Results";
 import './App.css';
-import Loafing from "./conponents/Loading";
+import Loading from "./conponents/Loading";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -41,9 +41,8 @@ function App() {
     <div className = "wrapper">
       <div className = "container">
         <Title />
-        <Form getWeather={getWeather} setCity={setCity} city={city}/>
-        <Results results={results}/>
-        {loading && <Loading/>}
+        <Form getWeather={getWeather} city={city} setCity={setCity}/>
+        {loading ? <Loading /> : <Results results={results}/>}
       </div>
     </div>
   );
