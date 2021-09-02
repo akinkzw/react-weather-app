@@ -23,7 +23,7 @@ body {
    display: flex;
    justify-content: center;
    align-items: center; 
-   background: url("./conponents/background-image.jpg") center center no-repeat;
+   background: url("./conponents/background.jpg") center center no-repeat;
    background-size: cover;
 }
 
