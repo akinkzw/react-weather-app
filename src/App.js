@@ -22,19 +22,25 @@ function App() {
   const getWeather = (e) => {
     e.preventDefault();
     setLoading(true);
-    axios.get(`https://api.weatherapi.com/v1/current.json?key=46e423faf40844c5bc1155606213108&q=${city}&aqi=no`)
+    axios.get("https://api.weatherapi.com/v1/current.json", {
+      params: {
+        key: process.env.REACT_APP_WEATHER_API_KEY,
+        q: city,
+        aqi: "no",
+      },
+    })
     .then(res => {
       setResults({
         country: res.data.location.country,
         cityName: res.data.location.name,
         temperature: res.data.current.temp_c,
         conditionText: res.data.current.condition.text,
-        icon:res.data.current.condition.icon
-      })
+        icon: res.data.current.condition.icon,
+      });
       setCity("");
-      setLoading(false);
     })
-      .catch(err => alert("エラーが発生しました。ページをリロードして、もう一度トライしてください。")); 
+    .catch(() => alert("エラーが発生しました。ページをリロードして、もう一度トライしてください。"))
+    .finally(() => setLoading(false));
   }
 
   return (
