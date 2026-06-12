@@ -48,26 +48,75 @@ h1 {
     margin: 0px 0 50px;
 }
 
-/* Form.js */
+/* Form */
+.search-form {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.autocomplete-wrapper {
+    position: relative;
+    width: 40%;
+}
+
 input[type="text"] {
     background-color: transparent;
     border: 0;
     border-bottom: solid 1px #f15186;
-    width: 40%;
+    width: 100%;
     padding-bottom: 4px;
     color: #fff !important;
     font-weight: lighter;
     letter-spacing: 2px;
-    margin-bottom: 30px;
-    margin-right: 20px;
     font-size: 20px;
+    box-sizing: border-box;
+}
+
+.suggestions {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    z-index: 10;
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.suggestions li {
+    padding: 8px 14px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.suggestions li:hover {
+    background: rgba(241, 81, 134, 0.35);
+}
+
+.suggestion-region {
+    font-size: 1.1rem;
+    opacity: 0.7;
+    white-space: nowrap;
 }
 
 button {
-    width: 40%;
+    width: auto;
     border: 0;
     padding: 8px 20px;
-    margin: 0 2px;
     border-radius: 2px;
     letter-spacing: 1px;
     font-size: 1.5rem;
