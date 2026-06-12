@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import axios from "axios";
-import Title from "./conponents/Title";
-import Form from "./conponents/Form";
-import Results from "./conponents/Results";
-import Loading from "./conponents/Loading";
+import Title from "./components/Title";
+import Form from "./components/Form";
+import Results from "./components/Results";
+import Loading from "./components/Loading";
 import './App.css';
 
 function App() {
