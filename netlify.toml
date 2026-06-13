@@ -4,3 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+[[redirects]]
+  from = "/api/gsi"
+  to = "https://msearch.gsi.go.jp/address-search/AddressSearch"
+  status = 200
+  force = true
