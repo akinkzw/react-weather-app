@@ -41,6 +41,16 @@ body {
     .container{
         width: 80vw;
     }
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .autocomplete-wrapper {
+        width: 100%;
+    }
+    button {
+        width: 100%;
+    }
 }
 
 /* Title.js */
