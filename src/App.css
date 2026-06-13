@@ -37,25 +37,6 @@ body {
     backdrop-filter: blur(20px);
     box-shadow: 4px 4px 13px 5px rgba(0,0,0,0.25);
 }
-@media only screen and (max-width: 700px) {
-    .container{
-        width: 80vw;
-    }
-    .search-form {
-        flex-direction: column;
-        align-items: center;
-    }
-    .autocomplete-wrapper {
-        width: 100%;
-    }
-    button {
-        width: 100%;
-    }
-    input[type="text"] {
-        font-size: 16px;
-        letter-spacing: 1px;
-    }
-}
 
 /* Title.js */
 h1 {
@@ -203,4 +184,24 @@ button:hover {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@media only screen and (max-width: 700px) {
+    .container {
+        width: 80vw;
+    }
+    .search-form {
+        flex-direction: column;
+        align-items: center;
+    }
+    .autocomplete-wrapper {
+        width: 100%;
+    }
+    button {
+        width: 100%;
+    }
+    input[type="text"] {
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
 }
