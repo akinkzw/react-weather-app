@@ -1,5 +1,5 @@
 const Title = () => (
-    <h1>World Weather</h1>
+    <h1>What's the weather like today?</h1>
   );
 
 
