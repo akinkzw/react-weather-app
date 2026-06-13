@@ -25,7 +25,7 @@ const Form = ({ city, setCity, getWeather, suggestions, onSelect, onDismiss }) =
         <input
           type="text"
           name="city"
-          placeholder="City Name（例: Tokyo, 山梨, 八王子市）"
+          placeholder="City Name (e.g. Tokyo, 山梨, 八王子市)"
           onChange={e => setCity(e.target.value)}
           onKeyDown={handleKeyDown}
           value={city}
