@@ -44,7 +44,7 @@ const Form = ({ city, setCity, getWeather, suggestions, onSelect, onDismiss }) =
           </ul>
         )}
       </div>
-      <button type="submit">天気を見る</button>
+      <button type="submit">Check the weather</button>
     </form>
   );
 };
