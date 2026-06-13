@@ -165,7 +165,13 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
     font-size: 2.5rem;
+}
+
+.weather-emoji {
+    font-size: 3.5rem;
+    line-height: 1;
 }
 
 /* Loading.js */

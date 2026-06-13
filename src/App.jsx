@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import Title from "./components/Title.jsx";
 import Form from "./components/Form.jsx";
 import Results from "./components/Results.jsx";
 import Loading from "./components/Loading.jsx";
+import { getWeatherInfo } from "./utils/weatherCode.js";
 import './App.css';
+
+const GEO_URL = "https://geocoding-api.open-meteo.com/v1/search";
+const FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -15,7 +18,7 @@ function App() {
     cityName: "",
     temperature: "",
     conditionText: "",
-    icon: ""
+    icon: "",
   });
   const debounceTimer = useRef(null);
 
@@ -26,50 +29,61 @@ function App() {
       return;
     }
     clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      axios.get("https://api.weatherapi.com/v1/search.json", {
-        params: { key: import.meta.env.VITE_WEATHER_API_KEY, q: query },
-      })
-        .then(res => setSuggestions(res.data))
-        .catch(() => setSuggestions([]));
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`${GEO_URL}?name=${encodeURIComponent(query)}&language=ja&count=5`);
+        const data = await res.json();
+        setSuggestions(data.results ?? []);
+      } catch {
+        setSuggestions([]);
+      }
     }, 300);
     return () => clearTimeout(debounceTimer.current);
   }, [city]);
 
-  const handleSelect = (name) => {
-    setSuggestions([]);
-    fetchWeather(name);
-  };
-
-  const fetchWeather = (query) => {
+  const fetchWeather = async (lat, lon, name, country) => {
     setLoading(true);
-    axios.get("https://api.weatherapi.com/v1/current.json", {
-      params: {
-        key: import.meta.env.VITE_WEATHER_API_KEY,
-        q: query,
-        aqi: "no",
-        lang: "ja",
-      },
-    })
-      .then(res => {
-        setResults({
-          country: res.data.location.country,
-          cityName: res.data.location.name,
-          temperature: res.data.current.temp_c,
-          conditionText: res.data.current.condition.text,
-          icon: res.data.current.condition.icon,
-        });
-        setCity("");
-      })
-      .catch(() => alert("エラーが発生しました。ページをリロードして、もう一度トライしてください。"))
-      .finally(() => setLoading(false));
+    try {
+      const res = await fetch(
+        `${FORECAST_URL}?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`
+      );
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      const { label, emoji } = getWeatherInfo(data.current.weather_code);
+      setResults({
+        cityName: name,
+        country,
+        temperature: data.current.temperature_2m,
+        conditionText: label,
+        icon: emoji,
+      });
+      setCity("");
+    } catch {
+      alert("エラーが発生しました。ページをリロードして、もう一度トライしてください。");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const getWeather = (e) => {
-    e.preventDefault();
-    if (!city.trim()) return;
+  const handleSelect = (location) => {
     setSuggestions([]);
-    fetchWeather(city);
+    fetchWeather(location.latitude, location.longitude, location.name, location.country);
+  };
+
+  const getWeather = async (e) => {
+    e.preventDefault();
+    const query = city.trim();
+    if (!query) return;
+    setSuggestions([]);
+    try {
+      const res = await fetch(`${GEO_URL}?name=${encodeURIComponent(query)}&language=ja&count=1`);
+      const data = await res.json();
+      const loc = data.results?.[0];
+      if (!loc) { alert("都市が見つかりませんでした。"); return; }
+      fetchWeather(loc.latitude, loc.longitude, loc.name, loc.country);
+    } catch {
+      alert("エラーが発生しました。ページをリロードして、もう一度トライしてください。");
+    }
   };
 
   return (
@@ -82,6 +96,7 @@ function App() {
           setCity={setCity}
           suggestions={suggestions}
           onSelect={handleSelect}
+          onDismiss={() => setSuggestions([])}
         />
         {loading ? <Loading /> : <Results results={results}/>}
       </div>

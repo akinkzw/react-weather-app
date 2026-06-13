@@ -1,24 +1,22 @@
 import { useRef, useEffect } from "react";
 
-const Form = ({ city, setCity, getWeather, suggestions, onSelect }) => {
+const Form = ({ city, setCity, getWeather, suggestions, onSelect, onDismiss }) => {
   const wrapperRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-        onSelect(city);
+        onDismiss();
       }
     };
     if (suggestions.length > 0) {
       document.addEventListener("mousedown", handleClickOutside);
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [suggestions, city, onSelect]);
+  }, [suggestions, onDismiss]);
 
   const handleKeyDown = (e) => {
-    if (e.key === "Escape") {
-      onSelect(city);
-    }
+    if (e.key === "Escape") onDismiss();
   };
 
   return (
@@ -27,7 +25,7 @@ const Form = ({ city, setCity, getWeather, suggestions, onSelect }) => {
         <input
           type="text"
           name="city"
-          placeholder="都市名を入力"
+          placeholder="都市名（例: Tokyo, 山梨）"
           onChange={e => setCity(e.target.value)}
           onKeyDown={handleKeyDown}
           value={city}
@@ -36,9 +34,11 @@ const Form = ({ city, setCity, getWeather, suggestions, onSelect }) => {
         {suggestions.length > 0 && (
           <ul className="suggestions">
             {suggestions.map((s) => (
-              <li key={s.id} onMouseDown={() => onSelect(s.name)}>
+              <li key={s.id} onMouseDown={() => onSelect(s)}>
                 {s.name}
-                <span className="suggestion-region">{s.region && `${s.region}, `}{s.country}</span>
+                <span className="suggestion-region">
+                  {s.admin1 && `${s.admin1}, `}{s.country}
+                </span>
               </li>
             ))}
           </ul>
